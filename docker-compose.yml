@@ -1,0 +1,8 @@
+version: '2.1'
+
+services:
+  cime_mirror_ui:
+    image: cime_mirror_ui
+    build: .
+    ports:
+      - :
