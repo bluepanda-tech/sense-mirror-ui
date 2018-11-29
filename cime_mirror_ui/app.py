@@ -43,7 +43,7 @@ class App:
             window=self.window,
             products=self.products_dir,
         )
-        self.thumbnail.pack()
+        self.thumbnail.pack(fill=BOTH, expand=YES)
 
         #Create Frame to display products
         self.products = Products(
@@ -119,10 +119,14 @@ class App:
                 self.delete_files()
         self.window.after(10000, self.update_data)
 
+#TODO correct resizing only happens after the second frame is called
 class Thumbnail(Canvas):
     def __init__(self, window, products, *args, **kwargs):
         Canvas.__init__(self, window, *args, **kwargs)
         self.config(bg='black', highlightbackground='black')
+        self.bind("<Configure>", self.on_resize)
+        self.height = self.winfo_reqheight()
+        self.width = self.winfo_reqwidth()
         # Create in-memory dictionary for fast access
         self.products_dir = products
         # Create list with indexes of products for better iteration
@@ -137,8 +141,16 @@ class Thumbnail(Canvas):
         self.video_source = self.get_video_source()
         try:
             self.vid = MyVideoCapture(self.video_source)
+            self.vid_ratio = self.vid.ratio
         except ValueError:
             self.get_next_video()
+
+    def on_resize(self, event):
+        """Function that is called everytime the canvas is resized"""
+        self.width = event.width
+        self.height = event.height
+        # resize the canvas 
+        self.config(width=self.width, height=self.height)
 
     def get_video_source(self):
         """Gets video source by looking for the specific item id inside the
@@ -158,7 +170,8 @@ class Thumbnail(Canvas):
         ret, frame = self.vid.get_frame()
 
         if ret:
-            frame = cv2.resize(frame, (400, 200))
+            # Resizing frame
+            frame = cv2.resize(frame, (self.width, int(self.width/self.vid_ratio)))
             self.photo = PIL.ImageTk.PhotoImage(image=PIL.Image.fromarray(frame))
             self.create_image(0, 0, image=self.photo, anchor=NW)
             # delays updating of the thumbnail depending on the filetype
@@ -181,6 +194,7 @@ class Thumbnail(Canvas):
             self.vid = MyVideoCapture(self.video_source)
         except ValueError:
             self.get_next_video()
+        self.vid_ratio = self.vid.ratio
 
 class MyVideoCapture:
     def __init__(self, video_source):
@@ -194,7 +208,7 @@ class MyVideoCapture:
         # Get video source width, height and fps
         self.width = self.vid.get(cv2.CAP_PROP_FRAME_WIDTH)
         self.height = self.vid.get(cv2.CAP_PROP_FRAME_HEIGHT)
-        self.fps = self.vid.get(cv2.CAP_PROP_FPS)
+        self.ratio = self.width/self.height
 
     def get_frame(self):
         #TODO handle this better
@@ -249,11 +263,11 @@ class Products(Frame):
             product_name = name
 
             widget2 = ProductName(self.product_names_container2, product_name)
-            widget2.pack(side=TOP)
+            widget2.pack(side=TOP, anchor=W)
 
 class ProductName(Frame):
     def __init__(self, parent, product_name=""):
         Frame.__init__(self, parent, background='black')
         self.product_name = product_name
-        self.product_name_lbl = Label(self, text=self.product_name, fg='white', bg='black')
+        self.product_name_lbl = Label(self, text=self.product_name, font=('clean', 18), fg='white', bg='black')
         self.product_name_lbl.pack(side=TOP, anchor=W)
