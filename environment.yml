@@ -1,5 +1,0 @@
-name: cime_mirror_ui
-channels:
-  - defaults
-prefix: /home/hacknoob/anaconda3/envs/cime_mirror_ui
-
