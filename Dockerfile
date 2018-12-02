@@ -20,7 +20,7 @@ RUN pip3 install -r requirements.txt
 RUN apt-get install python3-tk
 ENV DISPLAY :0
 RUN apt-get install x11vnc
-COPY ./cime_mirror_ui /cime_mirror_ui
+COPY ./ui /ui
 
 COPY ./run.py /
 
