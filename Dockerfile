@@ -1,7 +1,7 @@
 FROM tdicola/pi_python_opencv_contrib
 
 LABEL maintainer="Sebastian Arboleda <sebasarboleda22@gmail.com"
-LABEL Name=cime_mirror_engine 
+LABEL Name=web_app 
 LABEL Version=0.0.1
 
 COPY ./environments/requirements.txt /
