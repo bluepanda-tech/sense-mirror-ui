@@ -6,7 +6,7 @@ Base = automap_base()
 
 # instantiating the engine
 #TODO add database URI from environment variable
-engine = create_engine("postgresql://postgres:mysecretpassword@localhost/cime")
+engine = create_engine("postgresql://postgres:mysecretpassword@postgres/cime")
 
 # reflect the tables
 Base.prepare(engine, reflect=True)
