@@ -295,7 +295,7 @@ class ProductInfo(Frame):
         self.product_name_lbl.grid(row=0, column=1, columnspan=1, padx=20, sticky=NSEW)
 
         #Description Label
-        self.description_lbl = Label(self, text=description, bg="black", fg="white", justify=LEFT, anchor=NW, wraplength=600)
+        self.description_lbl = Label(self, text=description, bg="black", fg="white", justify=LEFT, anchor=NW, wraplength=600, font=('clean', 14))
         self.description_lbl.grid(row=1, column=1, padx=20, sticky=N)
 
         self.grid_columnconfigure(0, weight=1, uniform="group1")
