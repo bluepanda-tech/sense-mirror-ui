@@ -6,7 +6,7 @@ Base = automap_base()
 
 # instantiating the engine
 #TODO add database URI from environment variable
-engine = create_engine("postgresql://postgres:mysecretpassword@postgres/cime")
+engine = create_engine("postgresql://postgres:mysecretpassword@localhost/cime")
 
 # reflect the tables
 Base.prepare(engine, reflect=True)
@@ -17,5 +17,6 @@ Product = Base.classes.products
 MediaFile = Base.classes.media_files
 DeletedFile = Base.classes.deleted_files
 ProductEdit = Base.classes.product_edits
+ProductToDisplayInfo = Base.classes.info_to_display
 
 session = Session(engine)
